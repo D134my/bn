@@ -7,16 +7,11 @@
 
 using namespace std::chrono_literals;
 
-bn::bn() {
+bn::bn(std::string const &music, int sleep)
+    : sleep_time{sleep}, music_path{music} {
   auto file_bat_stat = std::ifstream(is_charging_path);
   file_bat_stat >> bat_status;
 }
-
-bn::bn(int sleep) : sleep_time{sleep} {
-  auto file_bat_stat = std::ifstream(is_charging_path);
-  file_bat_stat >> bat_status;
-}
-
 
 void bn::show_msg() {
   auto p_result = popen(msg.c_str(), "r");
@@ -33,8 +28,7 @@ void bn::show_msg() {
 
 void bn::play_sound() {
   auto instance = VLC::Instance(0, nullptr);
-  auto media =
-      VLC::Media(instance, "../resources/ringtone.mp3", VLC::Media::FromPath);
+  auto media = VLC::Media(instance, music_path, VLC::Media::FromPath);
   auto player = VLC::MediaPlayer(media);
   player.play();
   std::this_thread::sleep_for(std::chrono::seconds(10));
