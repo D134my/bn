@@ -52,6 +52,9 @@ void bn::start() {
       count++;
     }
 
+    if (bat_status != "Discharging" && count != 0)
+      count = 0;
+
     // std::cout << "battery status " << bat_status << " energy now " <<
     // energy_now
     //           << "count number " << count << std::endl;
